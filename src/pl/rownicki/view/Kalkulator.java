@@ -1,7 +1,9 @@
 package pl.rownicki.view;
 
-import pl.rownicki.GUI.KeyList;
 import pl.rownicki.config.Config;
+import pl.rownicki.observer.KeyList;
+import pl.rownicki.controller.Controller;
+import pl.rownicki.model.RemoveText;
 import pl.rownicki.model.WykonajOperacje;
 
 import javax.swing.*;
@@ -11,30 +13,16 @@ import java.awt.event.ActionListener;
 
 public class Kalkulator extends JFrame  {
 
-     private JTextField textField;
+     private static JTextField textField;
      private GridBagConstraints c;
-     private final WykonajOperacje op;
-     private boolean saved = false;
 
      private final KeyList keyList;
 
-     private final static int NUMS_LIMIT = 14;
-
-
-    public static void main(String[] args) {
-        new Kalkulator();
-    }
-
     public Kalkulator() {
         super("Kalkulator");
-        this.op = new WykonajOperacje();
-        this.op.setKalkulator(this);
         keyList = new KeyList();
-        this.keyList.setKalkulator(this);
         this.stworzGUI();
     }
-
-
 
     public void stworzGUI() {
 
@@ -63,7 +51,7 @@ public class Kalkulator extends JFrame  {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
         setFocusable(true);
-        setSize(400, 350);
+        setSize(Config.getWINDOW_WIDTH(), Config.getWINDOW_HEIGHT());
         setResizable(false);
         setVisible(true);
 
@@ -92,7 +80,7 @@ public class Kalkulator extends JFrame  {
         panel1.add(deleteAll);
 
         for(JButton b: buttons) {
-            b.addActionListener(op);
+            b.addActionListener(new dodajZnakListener());
             b.setFocusable(false);
             panel1.add(b);
         }
@@ -131,7 +119,7 @@ public class Kalkulator extends JFrame  {
             panel1.add(button);
         }
 
-        equals.addActionListener(op);
+        equals.addActionListener(new dodajZnakListener());
         equals.setFocusable(false);
         panel1.add(equals);
 
@@ -144,84 +132,24 @@ public class Kalkulator extends JFrame  {
         pane.add(panel1, c);
     }
 
-//    public static void setTextField(String text) {
-//        textField.setText(text);
-//    }
-//
-//    public static String getTextField() {
-//        return textField.getText();
-//    }
 
-    public void setSaved(boolean saved) {
-        this.saved = saved;
+
+
+    public static void setTextField(String text) {
+        textField.setText(text);
     }
 
-    public double pobierzWynik() {
-        return Double.parseDouble(textField.getText().replace(",", "."));
-    }
-
-    public void ustawWynik(double liczba) {
-        if(Math.floor(liczba) == liczba)
-            setText(String.valueOf(Math.round(liczba)));
-        else
-            setText(String.valueOf(liczba));
-    }
-
-    public WykonajOperacje getOp() {
-        return op;
-    }
-
-
-    public void setText(String s) {
-        if(s.length() < NUMS_LIMIT) {
-            textField.setText(s);
-        }
-        else {
-            textField.setText(s.substring(0, NUMS_LIMIT));
-        }
-    }
-    public String getText() {
+    public static String getTextField() {
         return textField.getText();
     }
 
 
-    public void removeLast() {
-        if(!getText().equals("0"))
-            setText(getText().substring(0, getText().length()-1));
-        if(getText().equals(""))
-            setText("0");
-    }
-
-    public void dodajZnak(String command) {
-        int limit = Config.getNUMS_LIMIT();
-        if(saved) {
-            setText("0");
-            saved = false;
-        }
-        if ((command.equals(",") & getText().contains(command)) || (command.equals("0") || command.equals("00"))
-                & getText().equals("0")) {
-
-        }
-        else if(getText().equals("0") & !command.equals(",")) {
-            setText(command);
-        }
-        else if(getText().length() < limit) {
-            setText(getText() + command);
-        }
-    }
-    public void removeAll() {
-        if(!getText().equals("0"))
-            setText("0");
-        op.setX(0);
-        op.setObecnaOperacja(null);
-    }
-
-    class dodajZnakListener implements ActionListener{
+    class dodajZnakListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             String s = e.getActionCommand();
-            dodajZnak(s);
+            Controller.wykonajAkcje(s);
         }
     }
 
@@ -229,16 +157,15 @@ public class Kalkulator extends JFrame  {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            removeLast();
+            RemoveText.removeLast();
         }
-
     }
 
     class RemoveAllListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            removeAll();
+            RemoveText.removeAll();
         }
     }
 }

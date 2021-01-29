@@ -1,5 +1,7 @@
 package pl.rownicki.observer;
 
+import pl.rownicki.model.Operacja;
+
 public interface Observer {
-    void update(String command, boolean isLastOperation);
+    void update(String s);
 }

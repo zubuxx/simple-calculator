@@ -1,16 +1,13 @@
-package pl.rownicki.GUI;
+package pl.rownicki.observer;
 
+import pl.rownicki.controller.Controller;
+import pl.rownicki.model.RemoveText;
 import pl.rownicki.view.Kalkulator;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyList implements KeyListener {
-    private Kalkulator kalkulator;
-
-    public void setKalkulator(Kalkulator kalkulator) {
-        this.kalkulator = kalkulator;
-    }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -18,20 +15,18 @@ public class KeyList implements KeyListener {
         String tasks = "-+/*%p";
 
         String command = String.valueOf(e.getKeyChar()).replace(".",",");
-        if(nums.contains(command))
-            kalkulator.dodajZnak(command);
-        if(tasks.contains(command))
-            kalkulator.getOp().wykonajDzialanie(command);
+        Controller.wykonajAkcje(command);
+
 
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == 8) {
-            kalkulator.removeLast();
+            RemoveText.removeLast();
         }
         else if(e.getKeyCode() == 10) {
-            kalkulator.getOp().wykonajDzialanie("=");
+            Controller.wykonajAkcje("=");
         }
     }
 
