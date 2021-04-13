@@ -4,7 +4,6 @@ import pl.rownicki.config.Config;
 import pl.rownicki.observer.KeyList;
 import pl.rownicki.controller.Controller;
 import pl.rownicki.model.RemoveText;
-import pl.rownicki.model.WykonajOperacje;
 
 import javax.swing.*;
 import java.awt.*;
