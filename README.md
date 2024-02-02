@@ -36,6 +36,6 @@ The `Start.java` file is the main entry point for the application. Running this 
 
 ## Contact
 
-For any questions or concerns about the Swing Calculator Application, please open an issue in the repository or contact me by email: krownicki1@gmail.com
+For any questions or concerns about the calculator, please contact me by email: krownicki1@gmail.com
 
 
