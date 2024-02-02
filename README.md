@@ -1,4 +1,4 @@
-# Swing Calculator Application
+# Swing Calculator App
 
 This repository contains a simple calculator application built using Java's Swing library for its graphical user interface (GUI) and the Observer pattern for efficient event handling. It is designed to offer a user-friendly interface for performing basic arithmetic operations.
 
